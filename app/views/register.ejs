@@ -22,7 +22,7 @@
               }
               else
               {
-                alert("Welcome to the dark side :)");
+                
                 return true;
               }
 
@@ -38,7 +38,15 @@
     <link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
 </head>
 <body>
-  
+
+  <% if(messages){%>
+
+        <div class="flash">
+            <%= messages %>
+        </div>
+
+<% } %>
+
     <div class="container">
         <form class="form-signin" action="/register" method="post" id = "form">
             <h2 class="form-signin-heading text-center">Register</h2>

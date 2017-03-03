@@ -1,0 +1,200 @@
+
+    <html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Homepage</title>
+
+
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+        <!-- Bootstrap Core CSS -->
+        <!-- <link href="css/bootstrap.min.css" rel="stylesheet"/> -->
+
+        <!-- Custom CSS -->
+        <link href="css/heroic-features.css" rel="stylesheet"/>
+
+
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+
+    <body>
+
+
+        <%if(messages){%>
+          <div>
+            <h3 style = "padding:20px"> Successful Registration </h3>
+          </div>
+          <%}%>
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top"  role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                  <!-- <a class="navbar-brand" href="#">Start Bootstrap</a> -->
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                          <% if(loggedIn == 0){ %>
+                            <li>
+                            <a href = "http://localhost:1337/students/studentSignIn"> Student? Sign In Here</a>
+                          </li>
+                          <li>
+                              <a href = "http://localhost:1337/register"> Or Register If You're New</a>
+                          </li>
+                            <% } else{ %>
+                            <li>
+                              <a href = "http://localhost:1337/logout"> Log Out</a> <br>
+                            </li>
+                            <li>
+                              <a href = "http://localhost:1337/profile"> Go To Profile </a>
+                           </li>
+                            <% } %>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+
+        <!-- Page Content -->
+        <div class="container">
+
+
+
+
+            <!-- Jumbotron Header -->
+            <header class="jumbotron hero-spacer"  >
+                <h1>Welcome to the GUC portfolio homepage!</h1>
+                <p>Here you'll be able to view students' work, and if you're a student yourself, create your own portfolio which others can view.</p>
+                <!-- <p><a class="btn btn-primary btn-large">Call to action!</a> -->
+
+            </header>
+
+            <!-- <hr> -->
+
+            <!-- Title -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Portfolios</h3>
+                </div>
+            </div>
+            <!-- /.row -->
+
+            <!-- Page Features -->
+            <div class="row text-center">
+
+              <% if(students.length == 0){ %>
+                <p>No available portfolios</p>
+              <% } else{ %>
+
+              <% for(var i = 0 ; i<students.length; i++) { %>
+
+                <% var photos = students[i].links.photo.split(','); %>
+                <% var urls = students[i].links.url.split(','); %>
+                <% var titles = students[i].links.title.split(','); %>
+
+                <div class="col-md-3 col-sm-3 hero-feature" style = "width:272.5px;height:378px;" >
+                    <div class="thumbnail" style = "width:262.5px;height:378px">
+                      <img src = <%= students[i].photo %> style = "width:400px; height:200px"/>
+
+                        <div class="caption">
+                            <p>Name: <%=students[i].name%></p>
+                            <% if(students[i].description){ %>
+                            <p>Description: <%=students[i].description%></p>
+                            <% } %>
+
+                            <p>Title 1: <%=titles[0]%></p>
+
+
+                        <% if(titles.length > 1){ %>
+                              <p>Title 2: <%=titles[1]%></p>
+                              <% } else{%>
+                                  <header style = "padding: 30px"/>
+                              <% } %>
+                        </div>
+                    </div>
+                </div>
+
+           <% } %>
+           <% } %>
+
+
+            </div>
+
+
+            <ul class="pagination">
+              <% if (currentPage > 1) { %>
+                  <li> <a href="/?page=1"> &laquo; </a> </li>
+              <% } %>
+              <% var i = 1;
+              if (currentPage > 5) {
+                i = +currentPage - 4;
+              } %>
+              <% if (i !== 1) { %>
+                  <li class="disabled"> <a href="#"> ... </a> </li>
+              <% } %>
+              <% for (i; i<=pageCount; i++) { %>
+                <% if (currentPage == i) { %>
+                    <li class="active"> <span> <%= i %> <span class="sr-only">(current) </span> </span> </li>
+                <% } else { %>
+                    <li><a href="/?page=<%=i%>"> <%= i %> </a> </li>
+                <% } %>
+                <% if (i == (+currentPage + 4)) { %>
+                    <li class="disabled"> <a href="#">... </a> </li>
+                <% break; } %>
+              <% } %>
+              <% if (currentPage != pageCount) { %>
+                  <li><a href="/?page= <%= pageCount %>"> &raquo; </a></li>
+              <% } %>
+            </ul>
+
+
+
+
+
+            <!-- Footer -->
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+        <!-- /.container -->
+
+        <!-- jQuery -->
+        <script src="js/jquery.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+    </body>
+
+    </html>

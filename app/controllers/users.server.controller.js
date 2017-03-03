@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Student = mongoose.model('Student');
 var passport = require('passport');
 
+var x = 0;
 exports.create = function(req, res, next) {
 
     var student = new Student(req.body);
@@ -12,8 +13,10 @@ exports.create = function(req, res, next) {
           var messages = getErrorMessage(err);
           req.flash('error', messages);
           console.log(messages);
-          return res.render('register', { messages : messages });
+          return res.render('register', {messages:messages});
         }
+        else {
+
         req.login(student, function(err) {
                 if (err)
                 {
@@ -21,10 +24,12 @@ exports.create = function(req, res, next) {
                 }
                 else
                 {
+                  x = 1;
                   return res.redirect('/');
                 }
 
             });
+          }
     });
 
 };
@@ -64,7 +69,7 @@ exports.renderLogin = function(req, res, next) {
 };
 
 exports.register = function(req,res){
-    res.render('register');
+    res.render('register', {messages:null});
 };
 
 
@@ -123,9 +128,11 @@ exports.homepage = function(req, res, next)
                   pageSize: pageSize,
                   pageCount: pageCount,
                   currentPage: currentPage,
-                  loggedIn:loggedIn
+                  loggedIn:loggedIn,
+                  messages:x
               });
 
+              x = 0;
 
 
           }
