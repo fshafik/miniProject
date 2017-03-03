@@ -9,9 +9,10 @@ exports.create = function(req, res, next) {
     student.provider = 'local';
     student.save(function(err) {
         if (err) {
-          var message = getErrorMessage(err);
-          req.flash('error', message);
-          return res.render('register', {messages:message});
+          var messages = getErrorMessage(err);
+          req.flash('error', messages);
+          console.log(messages);
+          return res.render('register', { messages : messages });
         }
         req.login(student, function(err) {
                 if (err)
@@ -94,29 +95,28 @@ exports.homepage = function(req, res, next)
 
               }
             }
-            console.log("student with work is readyyy");
               var pageSize = 10,
                   pageCount = Math.ceil((studentsWithWork.length)/pageSize),
                   currentPage = 1,
                   studentsArrays = [],
                   studentsList = [];
 
-              console.log("initialized variables");
+
               //split list into groups
               while (studentsWithWork.length > 0) {
                   studentsArrays.push(studentsWithWork.splice(0, pageSize));
               }
-              console.log("finished first loop");
+
               //set current page if specifed as get variable (eg: /?page=2)
               if (typeof req.query.page !== 'undefined') {
                   currentPage = +req.query.page;
                   home = 1;
               }
-              console.log("finished if condition");
+
 
               //show list of students from group
               studentsList = studentsArrays[+currentPage - 1];
-`             console.log("ANA HENAAAA");`
+
 
               res.render('homepage', {
                   students: studentsList,
@@ -141,7 +141,7 @@ exports.list = function(req, res, next) {
             return next(err);
         }
         else {
-          console.log(students);
+
             res.render('showall',{students:students});
         }
     });
@@ -209,7 +209,7 @@ exports.insertWorks = function(req,res){
         });
      }
       else {
-        console.log(req.file);
+
           var photo = req.file.filename;
           Student.findByIdAndUpdate(req.user.id, {$push:{"links.title": title,"links.photo":photo, "links.url": null}}, function(err, doc) {
           console.log(doc);
@@ -238,7 +238,7 @@ exports.getWorks = function(req, res,next)
               return next(err);
           }
           else {
-            console.log(user.links);
+
               res.render('portfolio', {links:user.links});
           }
       }
@@ -255,15 +255,15 @@ exports.getProfile = function(req,res){
             }
             else {
               if(req.user){
-                console.log("BODY: " + req.body);
+
                 var description = req.body.description;
                 if(req.user.links.title)
                 {
 
                   var photos = user.links.photo.split(',');
-                  console.log(photos);
+
                   var urls = user.links.url.split(',');
-                  console.log(urls);
+
                   var titles = user.links.title.split(',');
                   res.render('profile', {pic:req.user.photo, description:description,user:user, photos:photos, urls:urls, titles:titles});
                 }
@@ -289,7 +289,7 @@ exports.uploadProfilePic = function(req,res){
 exports.addProfilePic = function(req,res){
 
   Student.findByIdAndUpdate(req.user.id, {photo:req.file.filename}, function(err, user){//check if filename cause problem
-      console.log("user");
+      console.log();
 
 
 
@@ -297,9 +297,9 @@ exports.addProfilePic = function(req,res){
   if(req.user.links.title)
   {
       var photos = req.user.links.photo.split(',');
-    console.log(photos);
+
     var urls = req.user.links.url.split(',');
-    console.log(urls);
+
     var titles = req.user.links.title.split(',');
     res.render('profile', {pic:req.user.photo, user:req.user, photos:photos, urls:urls, titles:titles});
   }
@@ -317,16 +317,16 @@ exports.addDescription = function(req,res){
 
 
 exports.insertDescription = function(req,res){
-  console.log(req.user);
+
   Student.findByIdAndUpdate(req.user.id, {description:req.body.description}, function(err, user){//check if filename cause problem
-      console.log("user");
+
   });//change this
         if(req.user.links.title)
         {
             var photos = req.user.links.photo.split(',');
-          console.log(photos);
+
           var urls = req.user.links.url.split(',');
-          console.log(urls);
+
           var titles = req.user.links.title.split(',');
           res.render('profile', {pic:req.user.photo, user:req.user, photos:photos, urls:urls, titles:titles});
         }
