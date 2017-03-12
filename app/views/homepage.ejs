@@ -52,17 +52,17 @@
                 <ul class="nav navbar-nav">
                       <% if(loggedIn == 0){ %>
                         <li>
-                        <a href = "http://localhost:1337/students/studentSignIn"> Student? Sign In Here</a>
+                        <a href = "/students/studentSignIn"> Student? Sign In Here</a>
                       </li>
                       <li>
-                          <a href = "http://localhost:1337/register"> Or Register If You're New</a>
+                          <a href = "/register"> Or Register If You're New</a>
                       </li>
                         <% } else{ %>
                         <li>
-                          <a href = "http://localhost:1337/logout"> Log Out</a> <br>
+                          <a href = "/logout"> Log Out</a> <br>
                         </li>
                         <li>
-                          <a href = "http://localhost:1337/profile"> Go To Profile </a>
+                          <a href = "/profile"> Go To Profile </a>
                        </li>
                         <% } %>
                 </ul>
